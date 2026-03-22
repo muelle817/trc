@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Muelle 817</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body, html { height:100%; overflow:hidden; font-family:'Segoe UI',sans-serif; color:white; }
+
+    #bg-video {
+      position: fixed;
+      top: 50%; left: 50%;
+      min-width: 100%; min-height: 100%;
+      width: auto; height: auto;
+      transform: translate(-50%, -50%);
+      z-index: -2;
+      object-fit: cover;
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: -1;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .social-top-left {
+      position: absolute;
+      top: 20px; left: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      z-index: 10;
+    }
+
+    .social-top-left a img {
+      width: 50px; height: 50px;
+      transition: all 0.3s ease;
+      filter: drop-shadow(0 3px 6px rgba(0,0,0,0.6));
+    }
+
+    .social-top-left a img:hover {
+      transform: scale(1.15) translateY(-4px);
+      filter: drop-shadow(0 6px 12px rgba(0,0,0,0.7));
+    }
+
+    .menu-3d {
+      font-size: clamp(4.5rem, 12vw, 7rem);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      text-shadow: 0 8px 20px rgba(0,0,0,0.7), 0 15px 40px rgba(0,0,0,0.5);
+      transform: perspective(900px) rotateX(10deg);
+      margin: 40px 0 25px;
+      color: aliceblue;
+    }
+
+    .menu-3d:hover {
+      transform: perspective(900px) rotateX(16deg) translateY(-10px);
+      text-shadow: 0 12px 30px rgba(0,0,0,0.8), 0 20px 50px rgba(0,0,0,0.6);
+      color: aliceblue;
+    }
+
+    .review-btn {
+      font-size: clamp(1.4rem, 5vw, 1.9rem);
+      font-weight: 600;
+      padding: 14px 40px;
+      background: rgba(255,255,255,0.13);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.28);
+      border-radius: 50px;
+      color: white;
+      cursor: pointer;
+      transition: all 0.35s ease;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+      margin-top: 35px;
+    }
+
+    .review-btn:hover {
+      background: rgba(255,255,255,0.24);
+      transform: translateY(-5px);
+      box-shadow: 0 14px 35px rgba(0,0,0,0.55);
+    }
+
+    @media (max-width: 600px) {
+      .social-top-left { top:15px; left:15px; gap:15px; }
+      .social-top-left a img { width:44px; height:44px; }
+    }
+  </style>
+</head>
+<body>
+
+  <video autoplay muted loop playsinline id="bg-video">
+    <source src="fondo.mp4" type="video/mp4">
+  </video>
+
+  <div class="overlay"></div>
+
+  <div class="container">
+
+    <div class="social-top-left">
+      <a href="https://www.instagram.com/muelle817.trc?igsh=YjF6ZmMxMmN2cHZz" target="_blank">
+        <img src="ig.png" alt="Instagram">
+      </a>
+      <a href="https://www.facebook.com/share/1DdJfSsAj7/?mibextid=wwXIfr" target="_blank">
+        <img src="face.png" alt="Facebook">
+      </a>
+    </div>
+
+    <a href="menu.html" class="menu-3d">MENÚ</a>
+    
+    <button class="review-btn" onclick="window.open('https://g.page/r/CcDrzrjSZSCwEAE/review', '_blank')">
+      Cuéntanos tu experiencia
+    </button>
+
+  </div>
+
+</body>
+</html>
