@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Menú - Muelle 817</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body, html { 
+      height:100%; 
+      font-family:'Segoe UI',sans-serif; 
+      color:white; 
+      background:#111; 
+    }
+
+    #bg-video {
+      position: fixed;
+      top: 50%; left: 50%;
+      min-width: 100%; min-height: 100%;
+      width: auto; height: auto;
+      transform: translate(-50%, -50%);
+      z-index: -2;
+      object-fit: cover;
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: -1;
+    }
+
+    .back-btn {
+      position: fixed;
+      top: 20px; left: 20px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    .back-btn img {
+      width: 50px; height: 50px;
+      filter: drop-shadow(0 3px 8px rgba(0,0,0,0.8));
+      transition: all 0.3s ease;
+    }
+
+    .back-btn:hover img {
+      transform: scale(1.12) translateX(-6px);
+    }
+
+    .menu-container {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      padding: 90px 15px 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-y: auto;
+    }
+
+    .menu-images {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+      width: 100%;
+      max-width: 880px;
+    }
+
+    .menu-images img {
+      width: 100%;
+      max-width: 820px;
+      border-radius: 10px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+      transition: transform 0.25s ease;
+    }
+
+    .menu-images img:hover {
+      transform: scale(1.012);
+    }
+
+    @media (max-width: 600px) {
+      .back-btn { top:15px; left:15px; }
+      .back-btn img { width:46px; height:46px; }
+      .menu-images { gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <video autoplay muted loop playsinline id="bg-video">
+    <source src="fondo.mp4" type="video/mp4">
+  </video>
+
+  <div class="overlay"></div>
+
+  <button class="back-btn" onclick="window.location.href='index.html'">
+    <img src="flecha.png" alt="Regresar">
+  </button>
+
+  <div class="menu-container">
+    <div class="menu-images">
+      <img src="menu1.png" alt="Menú 1">
+      <img src="menu2.png" alt="Menú 2">
+      <img src="menu3.png" alt="Menú 3">
+      <img src="menu4.png" alt="Menú 4">
+      <img src="menu5.png" alt="Menú 5">
+      <img src="menu6.png" alt="Menú 6">
+    </div>
+  </div>
+
+</body>
+</html>
