@@ -5,23 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Muelle 817</title>
   <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body, html { height:100%; overflow:hidden; font-family:'Segoe UI',sans-serif; color:white; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
+    body, html {
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Segoe UI', sans-serif;
+      color: white;
+    }
+
+    /* Video de fondo corregido */
     #bg-video {
       position: fixed;
-      top: 50%; left: 50%;
-      min-width: 100%; min-height: 100%;
-      width: auto; height: auto;
-      transform: translate(-50%, -50%);
-      z-index: -2;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
+      z-index: -2;
     }
 
     .overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.45);
+      background: rgba(0, 0, 0, 0.45);
       z-index: -1;
     }
 
@@ -34,11 +45,13 @@
       justify-content: center;
       align-items: center;
       padding: 20px;
+      text-align: center;
     }
 
     .social-top-left {
       position: absolute;
-      top: 20px; left: 20px;
+      top: 20px;
+      left: 20px;
       display: flex;
       flex-direction: column;
       gap: 18px;
@@ -46,7 +59,8 @@
     }
 
     .social-top-left a img {
-      width: 50px; height: 50px;
+      width: 50px;
+      height: 50px;
       transition: all 0.3s ease;
       filter: drop-shadow(0 3px 6px rgba(0,0,0,0.6));
     }
@@ -97,22 +111,33 @@
       box-shadow: 0 14px 35px rgba(0,0,0,0.55);
     }
 
+    /* Responsive */
     @media (max-width: 600px) {
-      .social-top-left { top:15px; left:15px; gap:15px; }
-      .social-top-left a img { width:44px; height:44px; }
+      .social-top-left {
+        top: 15px;
+        left: 15px;
+        gap: 15px;
+      }
+      .social-top-left a img {
+        width: 44px;
+        height: 44px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <video autoplay muted loop playsinline id="bg-video">
+  <!-- Video de fondo -->
+  <video autoplay muted loop playsinline id="bg-video" preload="auto">
     <source src="fondo.mp4" type="video/mp4">
+    Tu navegador no soporta el video.
   </video>
 
+  <!-- Overlay oscuro -->
   <div class="overlay"></div>
 
+  <!-- Contenido principal -->
   <div class="container">
-
     <div class="social-top-left">
       <a href="https://www.instagram.com/muelle817.trc?igsh=YjF6ZmMxMmN2cHZz" target="_blank">
         <img src="ig.png" alt="Instagram">
@@ -123,12 +148,12 @@
     </div>
 
     <a href="menu.html" class="menu-3d">MENÚ</a>
-    
+   
     <button class="review-btn" onclick="window.open('https://g.page/r/CcDrzrjSZSCwEAE/review', '_blank')">
       Cuéntanos tu experiencia
     </button>
-
   </div>
 
 </body>
 </html>
+  </div>
