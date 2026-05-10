@@ -10,14 +10,12 @@
       padding: 0;
       box-sizing: border-box;
     }
-
     body, html {
       height: 100%;
       overflow: hidden;
       font-family: 'Segoe UI', sans-serif;
       color: white;
     }
-
     /* Video de fondo corregido */
     #bg-video {
       position: fixed;
@@ -28,14 +26,12 @@
       object-fit: cover;
       z-index: -2;
     }
-
     .overlay {
       position: fixed;
       inset: 0;
       background: rgba(0, 0, 0, 0.45);
       z-index: -1;
     }
-
     .container {
       position: relative;
       z-index: 1;
@@ -47,6 +43,20 @@
       padding: 20px;
       text-align: center;
     }
+    /* === NUEVO: Estilos del logo (discreto y elegante) === */
+    .logo {
+      width: 170px;           /* Tamaño discreto */
+      height: auto;
+      margin-bottom: 25px;    /* Espacio entre logo y "MENÚ" */
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
+      opacity: 0.92;          /* Un toque sutil de transparencia */
+      transition: all 0.3s ease;
+    }
+    .logo:hover {
+      transform: scale(1.05);
+      opacity: 1;
+    }
+    /* === Fin de estilos del logo === */
 
     .social-top-left {
       position: absolute;
@@ -57,19 +67,16 @@
       gap: 18px;
       z-index: 10;
     }
-
     .social-top-left a img {
       width: 50px;
       height: 50px;
       transition: all 0.3s ease;
       filter: drop-shadow(0 3px 6px rgba(0,0,0,0.6));
     }
-
     .social-top-left a img:hover {
       transform: scale(1.15) translateY(-4px);
       filter: drop-shadow(0 6px 12px rgba(0,0,0,0.7));
     }
-
     .menu-3d {
       font-size: clamp(4.5rem, 12vw, 7rem);
       font-weight: 900;
@@ -83,13 +90,11 @@
       margin: 40px 0 25px;
       color: aliceblue;
     }
-
     .menu-3d:hover {
       transform: perspective(900px) rotateX(16deg) translateY(-10px);
       text-shadow: 0 12px 30px rgba(0,0,0,0.8), 0 20px 50px rgba(0,0,0,0.6);
       color: aliceblue;
     }
-
     .review-btn {
       font-size: clamp(1.4rem, 5vw, 1.9rem);
       font-weight: 600;
@@ -104,13 +109,11 @@
       box-shadow: 0 8px 25px rgba(0,0,0,0.4);
       margin-top: 35px;
     }
-
     .review-btn:hover {
       background: rgba(255,255,255,0.24);
       transform: translateY(-5px);
       box-shadow: 0 14px 35px rgba(0,0,0,0.55);
     }
-
     /* Responsive */
     @media (max-width: 600px) {
       .social-top-left {
@@ -122,22 +125,27 @@
         width: 44px;
         height: 44px;
       }
+      .logo {
+        width: 140px;
+        margin-bottom: 20px;
+      }
     }
   </style>
 </head>
 <body>
-
   <!-- Video de fondo -->
   <video autoplay muted loop playsinline id="bg-video" preload="auto">
     <source src="fondo.mp4" type="video/mp4">
     Tu navegador no soporta el video.
   </video>
-
   <!-- Overlay oscuro -->
   <div class="overlay"></div>
-
+  
   <!-- Contenido principal -->
   <div class="container">
+    <!-- Logo centrado en la parte superior (discreto) -->
+    <img src="logo.png" alt="Muelle 817 Logo" class="logo">
+
     <div class="social-top-left">
       <a href="https://www.instagram.com/muelle817.trc?igsh=YjF6ZmMxMmN2cHZz" target="_blank">
         <img src="ig.png" alt="Instagram">
@@ -146,14 +154,12 @@
         <img src="face.png" alt="Facebook">
       </a>
     </div>
-
+    
     <a href="menu.html" class="menu-3d">MENÚ</a>
-   
+  
     <button class="review-btn" onclick="window.open('https://g.page/r/CcDrzrjSZSCwEAE/review', '_blank')">
       Cuéntanos tu experiencia
     </button>
   </div>
-
 </body>
 </html>
-  </div>
