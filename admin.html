@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Administración · Muelle 817 TRC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0f2740;--navy-soft:#1c3a57;
+    --gold:#c9a24b;--gold-light:#e6c976;--gold-deep:#b1863a;
+    --cream:#fbf8f1;--white:#fff;--ink:#26333f;--muted:#6a7581;
+    --line:#e6ddc9;--danger:#c0392b;--ok:#2e7d5b;--bg:#f5f2ea;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Montserrat',system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+  input,select,textarea,button{font-family:inherit;font-size:1rem}
+  input,select,textarea{
+    width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);
+    transition:border .15s,box-shadow .15s;
+  }
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,162,75,.18)}
+  textarea{resize:vertical;min-height:60px;line-height:1.4}
+  label{display:block;font-size:.74rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--navy-soft);margin:0 0 5px}
+  .btn{cursor:pointer;border:none;padding:11px 18px;border-radius:10px;font-weight:600;letter-spacing:.04em;transition:transform .12s,box-shadow .2s,background .2s}
+  .btn:active{transform:translateY(1px)}
+  .btn-gold{background:linear-gradient(135deg,var(--gold-light),var(--gold) 60%,var(--gold-deep));color:#3a2c0a;box-shadow:0 6px 16px rgba(178,134,58,.28)}
+  .btn-navy{background:var(--navy);color:#fff}
+  .btn-ghost{background:#fff;border:1px solid var(--line);color:var(--navy-soft)}
+  .btn-danger{background:#fff;border:1px solid var(--danger);color:var(--danger)}
+  .btn-sm{padding:7px 12px;font-size:.82rem;border-radius:8px}
+
+  /* Login */
+  .login{max-width:400px;margin:8vh auto;padding:20px}
+  .login .card{background:#fff;border-radius:18px;padding:34px 28px;box-shadow:0 18px 50px rgba(15,39,64,.14);border:1px solid var(--line)}
+  .login .brand{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:2.1rem;color:var(--navy);text-align:center;line-height:1}
+  .login .brand small{display:block;font-family:'Montserrat';font-size:.6rem;letter-spacing:.5em;color:var(--gold-deep);margin-top:6px;padding-left:.5em;font-weight:600}
+  .login h1{font-size:.9rem;text-align:center;color:var(--muted);font-weight:500;margin:16px 0 22px;letter-spacing:.14em;text-transform:uppercase}
+  .login .field{margin-bottom:14px}
+  .login .btn{width:100%;margin-top:6px}
+  .login .msg{margin-top:14px;font-size:.85rem;text-align:center;min-height:20px}
+  .login .msg.err{color:var(--danger)}
+  .login .msg.ok{color:var(--ok)}
+  .login .firsttime{margin-top:18px;text-align:center;font-size:.82rem;color:var(--muted)}
+  .login .firsttime a{color:var(--gold-deep);cursor:pointer;text-decoration:underline}
+  .login .create{display:none;margin-top:14px;padding-top:14px;border-top:1px dashed var(--line)}
+  .login .create.show{display:block}
+
+  /* Layout panel */
+  .topbar{position:sticky;top:0;z-index:40;background:var(--navy);color:#fff;display:flex;align-items:center;gap:14px;padding:12px 18px;box-shadow:0 4px 14px rgba(0,0,0,.15)}
+  .topbar .t-brand{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:1.35rem;flex:1;line-height:1}
+  .topbar .t-brand small{font-family:'Montserrat';font-size:.58rem;letter-spacing:.36em;color:var(--gold-light);display:block;font-weight:600}
+  .topbar a.view{color:var(--gold-light);text-decoration:none;font-size:.82rem;font-weight:600;letter-spacing:.04em;border:1px solid rgba(230,201,118,.4);padding:7px 12px;border-radius:8px}
+  .topbar a.view:hover{background:rgba(255,255,255,.08)}
+
+  .tabbar{display:flex;gap:6px;overflow-x:auto;background:#fff;border-bottom:1px solid var(--line);padding:8px 12px;position:sticky;top:52px;z-index:30}
+  .atab{white-space:nowrap;cursor:pointer;border:none;background:transparent;color:var(--navy-soft);padding:10px 16px;border-radius:10px;font-weight:600;font-size:.86rem;letter-spacing:.04em}
+  .atab.active{background:linear-gradient(135deg,var(--gold-light),var(--gold));color:#3a2c0a}
+
+  .page{max-width:840px;margin:0 auto;padding:20px 14px 120px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:16px;box-shadow:0 4px 14px rgba(15,39,64,.05)}
+  .card h2{font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--navy);margin-bottom:4px}
+  .card .hint{font-size:.82rem;color:var(--muted);margin-bottom:16px;line-height:1.5}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:560px){.grid2{grid-template-columns:1fr}}
+  .field{margin-bottom:14px}
+  .save-row{display:flex;gap:10px;align-items:center;margin-top:6px;flex-wrap:wrap}
+
+  /* Imágenes */
+  .thumbs{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0 12px}
+  .thumb{position:relative;width:88px;height:88px;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:#f0e9d8}
+  .thumb img{width:100%;height:100%;object-fit:cover}
+  .thumb .x{position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:50%;background:rgba(192,57,43,.92);color:#fff;border:none;cursor:pointer;font-size:.9rem;line-height:22px;padding:0;display:flex;align-items:center;justify-content:center}
+  .logo-preview{width:150px;max-height:100px;object-fit:contain;background:var(--navy);border-radius:10px;padding:8px;margin-bottom:10px;display:block}
+  .filebtn{position:relative;overflow:hidden;display:inline-flex}
+  .filebtn input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+
+  /* Secciones */
+  .sec-filter{display:flex;gap:8px;margin-bottom:14px;align-items:center;flex-wrap:wrap}
+  .sec-filter .grow{flex:1}
+  .seccard{background:#fff;border:1px solid var(--line);border-radius:16px;margin-bottom:14px;box-shadow:0 4px 14px rgba(15,39,64,.05);overflow:hidden}
+  .sechead{display:flex;align-items:center;gap:10px;padding:14px 16px;background:linear-gradient(180deg,#fffef9,#fbf6ea);border-bottom:1px solid var(--line);flex-wrap:wrap}
+  .sechead .name-in{flex:1;min-width:160px;font-family:'Cormorant Garamond',serif;font-weight:700;font-size:1.2rem;color:var(--navy);border:1px solid transparent;background:transparent}
+  .sechead .name-in:focus{background:#fff;border-color:var(--gold)}
+  .sechead .grp{width:auto;min-width:120px;flex:none}
+  .ordbtns{display:flex;gap:4px}
+  .ordbtns button{width:32px;height:32px;padding:0;border-radius:8px;background:#fff;border:1px solid var(--line);cursor:pointer;color:var(--navy-soft);display:flex;align-items:center;justify-content:center}
+  .ordbtns button:hover{background:var(--cream)}
+  .ordbtns svg{width:16px;height:16px}
+  .secbody{padding:16px}
+  .toggle{display:flex;align-items:center;gap:8px;margin:2px 0 14px;font-size:.86rem;color:var(--navy-soft)}
+  .toggle input{width:auto}
+  .labels2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+
+  table.items{width:100%;border-collapse:collapse}
+  .itemrow{border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:10px;display:grid;gap:8px;grid-template-columns:1fr auto;align-items:start}
+  .itemrow .main{display:grid;gap:8px}
+  .itemrow .prices{display:flex;gap:8px}
+  .itemrow .prices input{width:100px}
+  .itemrow .rm{align-self:start}
+  .price-pref{position:relative}
+  .price-pref span{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--gold-deep);font-weight:700;pointer-events:none}
+  .price-pref input{padding-left:22px}
+
+  .additem{margin-top:4px}
+  .footer-actions{display:flex;gap:10px;justify-content:space-between;align-items:center;padding:14px 16px;border-top:1px solid var(--line);background:#fbf9f3;flex-wrap:wrap}
+
+  /* Toast + overlay + modal */
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(24px);background:var(--navy);color:#fff;padding:13px 22px;border-radius:12px;font-size:.9rem;opacity:0;transition:all .3s;z-index:200;box-shadow:0 12px 34px rgba(0,0,0,.28);max-width:92vw;text-align:center}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .toast.err{background:var(--danger)}
+  .toast.ok{background:var(--ok)}
+  .overlay{position:fixed;inset:0;background:rgba(15,39,64,.55);display:none;align-items:center;justify-content:center;z-index:150;padding:20px}
+  .overlay.show{display:flex}
+  .overlay .box{background:#fff;border-radius:16px;padding:26px;max-width:400px;width:100%;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.3)}
+  .overlay .box p{margin-bottom:20px;color:var(--ink);line-height:1.5}
+  .overlay .box .row{display:flex;gap:10px;justify-content:center}
+  .spin-overlay{position:fixed;inset:0;background:rgba(255,255,255,.7);display:none;align-items:center;justify-content:center;z-index:180;flex-direction:column;gap:14px;color:var(--navy-soft);font-weight:600}
+  .spin-overlay.show{display:flex}
+  .spinner{width:40px;height:40px;border:4px solid var(--line);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .hidden{display:none !important}
+  .badge-saved{font-size:.78rem;color:var(--ok);opacity:0;transition:opacity .3s}
+  .badge-saved.show{opacity:1}
+</style>
+</head>
+<body>
+
+<!-- ================= LOGIN ================= -->
+<div class="login" id="loginView">
+  <div class="card">
+    <div class="brand">Muelle 817<small>TRC</small></div>
+    <h1>Administración</h1>
+    <div class="field">
+      <label>Usuario</label>
+      <input id="loginUser" type="text" autocomplete="username" placeholder="ale" value="ale">
+    </div>
+    <div class="field">
+      <label>Contraseña</label>
+      <input id="loginPass" type="password" autocomplete="current-password" placeholder="••••••••">
+    </div>
+    <button class="btn btn-gold" id="loginBtn">Entrar</button>
+    <div class="msg" id="loginMsg"></div>
+    <div class="firsttime">
+      ¿Primera vez? <a id="showCreate">Crear cuenta de administrador</a>
+    </div>
+    <div class="create" id="createBox">
+      <p style="font-size:.82rem;color:var(--muted);margin-bottom:10px;line-height:1.5">
+        Solo la primera vez. Usa el usuario <b>ale</b> y la contraseña que quieras conservar
+        (te sugerimos la que definiste). Después inicia sesión normal.
+      </p>
+      <button class="btn btn-navy" id="createBtn" style="width:100%">Crear cuenta con estos datos</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= PANEL ================= -->
+<div id="panelView" class="hidden">
+  <div class="topbar">
+    <div class="t-brand">Muelle 817<small>TRC · ADMIN</small></div>
+    <a class="view" href="index.html" target="_blank">Ver portada ↗</a>
+    <a class="view" href="menu.html" target="_blank">Ver menú ↗</a>
+    <button class="btn btn-ghost btn-sm" id="logoutBtn">Salir</button>
+  </div>
+
+  <div class="tabbar">
+    <button class="atab active" data-tab="general">General</button>
+    <button class="atab" data-tab="portada">Portada y redes</button>
+    <button class="atab" data-tab="secciones">Menú y secciones</button>
+  </div>
+
+  <!-- GENERAL -->
+  <div class="page tabpage" id="tab-general">
+    <div class="card">
+      <h2>Datos del restaurante</h2>
+      <p class="hint">Aparecen en la portada y el encabezado del menú.</p>
+      <div class="grid2">
+        <div class="field"><label>Nombre del restaurante</label><input id="cfgName" placeholder="Muelle 817 TRC"></div>
+        <div class="field"><label>Frase / subtítulo</label><input id="cfgTagline" placeholder="El sabor del mar"></div>
+      </div>
+      <div class="field"><label>Dirección (opcional)</label><input id="cfgAddress" placeholder="Calle, número, ciudad"></div>
+      <div class="save-row">
+        <button class="btn btn-gold" id="saveGeneral">Guardar datos</button>
+        <span class="badge-saved" id="savedGeneral">✓ Guardado</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PORTADA -->
+  <div class="page tabpage hidden" id="tab-portada">
+    <div class="card">
+      <h2>Logo</h2>
+      <p class="hint">Se muestra en la portada y en el menú. Usa PNG con fondo transparente si es posible.</p>
+      <img id="logoPreview" class="logo-preview hidden" alt="Logo">
+      <div class="save-row">
+        <span class="btn btn-navy filebtn">Subir logo<input type="file" accept="image/*" id="logoInput"></span>
+        <button class="btn btn-danger btn-sm hidden" id="logoRemove">Quitar logo</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Enlaces y redes sociales</h2>
+      <p class="hint">Deja en blanco lo que no uses. Puedes poner el usuario (@tunombre) o el enlace completo.</p>
+      <div class="grid2">
+        <div class="field"><label>Instagram</label><input id="cfgInstagram" placeholder="@muelle817"></div>
+        <div class="field"><label>Facebook</label><input id="cfgFacebook" placeholder="muelle817"></div>
+        <div class="field"><label>TikTok</label><input id="cfgTiktok" placeholder="@muelle817"></div>
+        <div class="field"><label>WhatsApp (teléfono)</label><input id="cfgWhatsapp" placeholder="5216441234567"></div>
+        <div class="field"><label>Teléfono</label><input id="cfgPhone" placeholder="+52 644 123 4567"></div>
+        <div class="field"><label>Enlace de reseñas (Google, etc.)</label><input id="cfgReview" placeholder="https://g.page/..."></div>
+      </div>
+      <div class="save-row">
+        <button class="btn btn-gold" id="savePortada">Guardar enlaces</button>
+        <span class="badge-saved" id="savedPortada">✓ Guardado</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Carrusel de la portada del menú</h2>
+      <p class="hint">Fotos grandes que giran cada 3 s en la parte superior del menú (opcional). Se guardan al subirlas.</p>
+      <div class="thumbs" id="carouselThumbs"></div>
+      <span class="btn btn-navy filebtn">Agregar fotos<input type="file" accept="image/*" multiple id="carouselInput"></span>
+    </div>
+  </div>
+
+  <!-- SECCIONES -->
+  <div class="page tabpage hidden" id="tab-secciones">
+    <div class="card" style="padding:16px 18px">
+      <div class="sec-filter">
+        <div class="grow">
+          <label style="margin-bottom:4px">Ver secciones de</label>
+          <select id="secFilter">
+            <option value="all">Todas</option>
+            <option value="food">Alimentos</option>
+            <option value="drinks">Bebidas</option>
+          </select>
+        </div>
+        <button class="btn btn-gold" id="addSectionBtn" style="align-self:flex-end">+ Nueva sección</button>
+      </div>
+      <div class="save-row" style="margin-top:2px">
+        <button class="btn btn-ghost btn-sm" id="seedBtn">Cargar menú inicial del PDF</button>
+        <span class="hint" style="margin:0">Úsalo solo una vez, cuando el menú esté vacío.</span>
+      </div>
+    </div>
+    <div id="sectionsHost"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="spin-overlay" id="spin"><div class="spinner"></div><span id="spinMsg">Guardando…</span></div>
+<div class="overlay" id="confirm">
+  <div class="box">
+    <p id="confirmMsg">¿Seguro?</p>
+    <div class="row">
+      <button class="btn btn-ghost" id="confirmNo">Cancelar</button>
+      <button class="btn btn-danger" id="confirmYes">Sí, continuar</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+<script src="firebase-init.js"></script>
+<script src="data-seed.js"></script>
+<script src="store.js"></script>
+<script>
+/* ---------------- Utilidades UI ---------------- */
+function $(id){return document.getElementById(id);}
+function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function toast(msg,kind){var t=$('toast');t.className='toast show'+(kind?(' '+kind):'');t.textContent=msg;clearTimeout(t._h);t._h=setTimeout(function(){t.classList.remove('show');},2800);}
+function spin(on,msg){$('spinMsg').textContent=msg||'Guardando…';$('spin').classList.toggle('show',!!on);}
+function flashSaved(id){var b=$(id);if(!b)return;b.classList.add('show');setTimeout(function(){b.classList.remove('show');},1600);}
+var _confirmCb=null;
+function confirmBox(msg,cb){$('confirmMsg').textContent=msg;_confirmCb=cb;$('confirm').classList.add('show');}
+$('confirmNo').onclick=function(){$('confirm').classList.remove('show');_confirmCb=null;};
+$('confirmYes').onclick=function(){$('confirm').classList.remove('show');if(_confirmCb)_confirmCb();_confirmCb=null;};
+
+/* ---------------- Estado ---------------- */
+var state={config:{},sections:[]};
+
+/* ---------------- LOGIN ---------------- */
+$('showCreate').onclick=function(){$('createBox').classList.toggle('show');};
+
+function loginError(e){
+  var code=(e&&e.code)||'';
+  if(code==='auth/operation-not-allowed') return 'Debes activar "Correo/Contraseña" en Firebase (Authentication → Sign-in method).';
+  if(code==='auth/invalid-credential'||code==='auth/wrong-password'||code==='auth/user-not-found') return 'Usuario o contraseña incorrectos. Si es la primera vez, usa "Crear cuenta de administrador".';
+  if(code==='auth/too-many-requests') return 'Demasiados intentos. Espera un momento e inténtalo de nuevo.';
+  if(code==='auth/network-request-failed') return 'Sin conexión. Revisa tu internet.';
+  if(code==='auth/email-already-in-use') return 'La cuenta ya existe. Solo inicia sesión con "Entrar".';
+  if(code==='auth/weak-password') return 'La contraseña es muy corta (mínimo 6 caracteres).';
+  return 'Error: '+(e.message||code||'desconocido');
+}
+function emailFor(user){
+  user=(user||'').trim();
+  if(user.indexOf('@')>-1) return user;
+  return ADMIN_EMAIL; // "ale" -> ale@muelle871.com
+}
+$('loginBtn').onclick=function(){
+  var u=$('loginUser').value, p=$('loginPass').value;
+  if(!p){$('loginMsg').className='msg err';$('loginMsg').textContent='Escribe la contraseña.';return;}
+  $('loginMsg').className='msg';$('loginMsg').textContent='Entrando…';
+  auth.signInWithEmailAndPassword(emailFor(u),p)
+    .catch(function(e){$('loginMsg').className='msg err';$('loginMsg').textContent=loginError(e);});
+};
+$('loginPass').addEventListener('keydown',function(e){if(e.key==='Enter')$('loginBtn').click();});
+$('createBtn').onclick=function(){
+  var u=$('loginUser').value, p=$('loginPass').value;
+  if(!p||p.length<6){$('loginMsg').className='msg err';$('loginMsg').textContent='Elige una contraseña de al menos 6 caracteres.';return;}
+  $('loginMsg').className='msg';$('loginMsg').textContent='Creando cuenta…';
+  auth.createUserWithEmailAndPassword(emailFor(u),p)
+    .then(function(){$('loginMsg').className='msg ok';$('loginMsg').textContent='¡Cuenta creada! Entrando…';})
+    .catch(function(e){$('loginMsg').className='msg err';$('loginMsg').textContent=loginError(e);});
+};
+$('logoutBtn').onclick=function(){auth.signOut();};
+
+auth.onAuthStateChanged(function(user){
+  if(user){
+    $('loginView').classList.add('hidden');
+    $('panelView').classList.remove('hidden');
+    bootPanel();
+  }else{
+    $('panelView').classList.add('hidden');
+    $('loginView').classList.remove('hidden');
+  }
+});
+
+/* ---------------- Navegación de pestañas ---------------- */
+document.querySelectorAll('.atab').forEach(function(b){
+  b.onclick=function(){
+    document.querySelectorAll('.atab').forEach(function(x){x.classList.remove('active');});
+    b.classList.add('active');
+    document.querySelectorAll('.tabpage').forEach(function(p){p.classList.add('hidden');});
+    $('tab-'+b.dataset.tab).classList.remove('hidden');
+  };
+});
+
+/* ---------------- Carga de datos ---------------- */
+var booted=false;
+function bootPanel(){
+  if(booted)return; booted=true;
+  spin(true,'Cargando…');
+  Promise.all([Store.loadConfig(),Store.loadSections()]).then(function(r){
+    state.config=r[0]||{}; state.sections=r[1]||[];
+    fillGeneral(); fillPortada(); renderSections();
+    spin(false);
+  }).catch(function(e){spin(false);toast(loginError(e),'err');});
+}
+
+/* ---------------- GENERAL ---------------- */
+function fillGeneral(){
+  var c=state.config;
+  $('cfgName').value=c.restaurantName||'';
+  $('cfgTagline').value=c.tagline||'';
+  $('cfgAddress').value=c.address||'';
+}
+$('saveGeneral').onclick=function(){
+  var data={restaurantName:$('cfgName').value.trim(),tagline:$('cfgTagline').value.trim(),address:$('cfgAddress').value.trim()};
+  spin(true);
+  Store.saveConfig(data).then(function(){Object.assign(state.config,data);spin(false);flashSaved('savedGeneral');toast('Datos guardados','ok');})
+    .catch(function(e){spin(false);toast(loginError(e),'err');});
+};
+
+/* ---------------- PORTADA / REDES ---------------- */
+function fillPortada(){
+  var c=state.config;
+  $('cfgInstagram').value=c.instagram||'';
+  $('cfgFacebook').value=c.facebook||'';
+  $('cfgTiktok').value=c.tiktok||'';
+  $('cfgWhatsapp').value=c.whatsapp||'';
+  $('cfgPhone').value=c.phone||'';
+  $('cfgReview').value=c.reviewUrl||'';
+  renderLogo(); renderCarousel();
+}
+$('savePortada').onclick=function(){
+  var data={
+    instagram:$('cfgInstagram').value.trim(),facebook:$('cfgFacebook').value.trim(),
+    tiktok:$('cfgTiktok').value.trim(),whatsapp:$('cfgWhatsapp').value.trim(),
+    phone:$('cfgPhone').value.trim(),reviewUrl:$('cfgReview').value.trim()
+  };
+  spin(true);
+  Store.saveConfig(data).then(function(){Object.assign(state.config,data);spin(false);flashSaved('savedPortada');toast('Enlaces guardados','ok');})
+    .catch(function(e){spin(false);toast(loginError(e),'err');});
+};
+
+function renderLogo(){
+  var c=state.config;
+  if(c.logoId){
+    Store.loadMedia(c.logoId).then(function(u){
+      if(u){$('logoPreview').src=u;$('logoPreview').classList.remove('hidden');$('logoRemove').classList.remove('hidden');}
+    });
+  }else{$('logoPreview').classList.add('hidden');$('logoRemove').classList.add('hidden');}
+}
+$('logoInput').onchange=function(e){
+  var f=e.target.files[0]; if(!f)return;
+  spin(true,'Subiendo logo…');
+  var old=state.config.logoId;
+  Store.uploadImage(f,{maxDim:640,format:'image/png'}).then(function(id){
+    return Store.saveConfig({logoId:id}).then(function(){
+      state.config.logoId=id; if(old)Store.deleteMedia(old);
+      renderLogo(); spin(false); toast('Logo actualizado','ok');
+    });
+  }).catch(function(err){spin(false);toast('No se pudo subir: '+(err.message||''),'err');});
+  e.target.value='';
+};
+$('logoRemove').onclick=function(){
+  confirmBox('¿Quitar el logo actual?',function(){
+    var old=state.config.logoId;
+    spin(true);
+    Store.saveConfig({logoId:firebase.firestore.FieldValue.delete()}).then(function(){
+      if(old)Store.deleteMedia(old); state.config.logoId=null; renderLogo(); spin(false); toast('Logo eliminado','ok');
+    }).catch(function(e){spin(false);toast(loginError(e),'err');});
+  });
+};
+
+function renderCarousel(){
+  var host=$('carouselThumbs'); host.innerHTML='';
+  var ids=state.config.carouselIds||[];
+  if(!ids.length){host.appendChild(el('span','hint','Aún no hay fotos en el carrusel.'));return;}
+  ids.forEach(function(id){
+    var t=el('div','thumb'); var img=el('img'); img.alt='';
+    Store.loadMedia(id).then(function(u){if(u)img.src=u;});
+    var x=el('button','x','×'); x.title='Quitar';
+    x.onclick=function(){
+      confirmBox('¿Quitar esta foto del carrusel?',function(){
+        spin(true);
+        var arr=(state.config.carouselIds||[]).filter(function(i){return i!==id;});
+        Store.saveConfig({carouselIds:arr}).then(function(){
+          state.config.carouselIds=arr; Store.deleteMedia(id); renderCarousel(); spin(false);
+        }).catch(function(e){spin(false);toast(loginError(e),'err');});
+      });
+    };
+    t.appendChild(img); t.appendChild(x); host.appendChild(t);
+  });
+}
+$('carouselInput').onchange=function(e){
+  var files=Array.prototype.slice.call(e.target.files); if(!files.length)return;
+  spin(true,'Subiendo fotos…');
+  var arr=(state.config.carouselIds||[]).slice();
+  (function next(i){
+    if(i>=files.length){
+      Store.saveConfig({carouselIds:arr}).then(function(){
+        state.config.carouselIds=arr;renderCarousel();spin(false);toast('Fotos agregadas','ok');
+      }).catch(function(err){spin(false);toast(loginError(err),'err');});
+      return;
+    }
+    Store.uploadImage(files[i]).then(function(id){arr.push(id);next(i+1);})
+      .catch(function(err){spin(false);toast('Error con una foto: '+(err.message||''),'err');});
+  })(0);
+  e.target.value='';
+};
+
+/* ---------------- SECCIONES ---------------- */
+$('secFilter').onchange=renderSections;
+$('addSectionBtn').onclick=function(){
+  var maxOrder=state.sections.reduce(function(m,s){return Math.max(m,s.order||0);},0);
+  var grp=$('secFilter').value==='drinks'?'drinks':'food';
+  var data={name:'Nueva sección',group:grp,order:maxOrder+1,twoPrice:false,photoIds:[],items:[{name:'Nuevo platillo',desc:'',price:''}]};
+  spin(true,'Creando…');
+  Store.addSection(data).then(function(id){data.id=id;state.sections.push(data);spin(false);renderSections();toast('Sección creada','ok');
+    var node=document.querySelector('.seccard[data-id="'+id+'"]');if(node)node.scrollIntoView({behavior:'smooth',block:'center'});
+  }).catch(function(e){spin(false);toast(loginError(e),'err');});
+};
+$('seedBtn').onclick=function(){
+  confirmBox('¿Cargar el menú completo del PDF? Solo hazlo si el menú está vacío (no borra lo existente, pero puede duplicar).',function(){
+    spin(true,'Cargando menú…');
+    Store.seedAll(false).then(function(res){
+      if(res.skipped){spin(false);toast('El menú ya tiene '+res.count+' secciones. No se cargó nada.','err');return;}
+      return Store.loadSections().then(function(secs){state.sections=secs;renderSections();spin(false);toast('Menú cargado ('+res.count+' secciones)','ok');});
+    }).catch(function(e){spin(false);toast(loginError(e),'err');});
+  });
+};
+
+function renderSections(){
+  var host=$('sectionsHost'); host.innerHTML='';
+  var f=$('secFilter').value;
+  var list=state.sections.slice().sort(function(a,b){return (a.order||0)-(b.order||0);});
+  var shown=list.filter(function(s){return f==='all'||(s.group||'food')===f;});
+  if(shown.length===0){host.appendChild(el('div','card','<p class="hint" style="margin:0">No hay secciones. Usa "Cargar menú inicial del PDF" o "+ Nueva sección".</p>'));return;}
+  shown.forEach(function(s){host.appendChild(buildSectionCard(s,list));});
+}
+
+function priceInput(val,ph){
+  var w=el('div','price-pref');
+  w.appendChild(el('span',null,'$'));
+  var inp=el('input'); inp.type='text'; inp.value=val||''; inp.placeholder=ph||'0';
+  inp.setAttribute('inputmode','decimal'); inp.dataset.role=ph==='botella'?'price2':'price';
+  w.appendChild(inp); return w;
+}
+
+function buildItemRow(item,twoPrice){
+  var row=el('div','itemrow');
+  var main=el('div','main');
+  var nm=el('input');nm.type='text';nm.value=item.name||'';nm.placeholder='Nombre del platillo';nm.dataset.role='name';
+  main.appendChild(nm);
+  var ds=el('textarea');ds.value=item.desc||'';ds.placeholder='Descripción (opcional)';ds.dataset.role='desc';ds.rows=2;
+  main.appendChild(ds);
+  var prices=el('div','prices');
+  prices.appendChild(priceInput(item.price,'precio'));
+  if(twoPrice) prices.appendChild(priceInput(item.price2,'botella'));
+  main.appendChild(prices);
+  row.appendChild(main);
+  var rm=el('button','btn btn-danger btn-sm rm','Quitar');
+  rm.onclick=function(){confirmBox('¿Quitar "'+(nm.value||'este platillo')+'"?',function(){row.remove();});};
+  row.appendChild(rm);
+  return row;
+}
+
+function buildSectionCard(s,fullList){
+  var card=el('div','seccard'); card.dataset.id=s.id;
+
+  /* Head */
+  var head=el('div','sechead');
+  var ord=el('div','ordbtns');
+  var up=el('button',null,'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>');up.title='Subir';
+  var dn=el('button',null,'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>');dn.title='Bajar';
+  up.onclick=function(){moveSection(s.id,-1);};
+  dn.onclick=function(){moveSection(s.id,1);};
+  ord.appendChild(up);ord.appendChild(dn);
+  head.appendChild(ord);
+  var nameIn=el('input','name-in');nameIn.type='text';nameIn.value=s.name||'';nameIn.dataset.role='secname';
+  head.appendChild(nameIn);
+  var grp=el('select','grp');grp.dataset.role='group';
+  grp.innerHTML='<option value="food">Alimentos</option><option value="drinks">Bebidas</option>';
+  grp.value=s.group||'food';
+  head.appendChild(grp);
+  card.appendChild(head);
+
+  /* Body */
+  var body=el('div','secbody');
+
+  // Fotos
+  var fLabel=el('label',null,'Fotos de la sección (carrusel de 3 s)');
+  body.appendChild(fLabel);
+  var thumbs=el('div','thumbs');thumbs.dataset.role='thumbs';
+  body.appendChild(thumbs);
+  renderSectionThumbs(thumbs,s);
+  var addPhoto=el('span','btn btn-navy btn-sm filebtn','Agregar fotos');
+  var fi=el('input');fi.type='file';fi.accept='image/*';fi.multiple=true;
+  fi.onchange=function(e){uploadSectionPhotos(s,e.target.files,thumbs);e.target.value='';};
+  addPhoto.appendChild(fi);
+  body.appendChild(addPhoto);
+
+  // Toggle dos precios
+  var tg=el('label','toggle');
+  var cb=el('input');cb.type='checkbox';cb.checked=!!s.twoPrice;cb.dataset.role='twoprice';
+  tg.appendChild(cb);tg.appendChild(document.createTextNode(' Esta sección usa dos precios (Copa / Botella)'));
+  body.appendChild(tg);
+
+  var labels=el('div','labels2');labels.dataset.role='labels';
+  var l1w=el('div');l1w.appendChild(el('label',null,'Etiqueta precio 1'));
+  var l1=el('input');l1.type='text';l1.value=s.priceLabel1||'Copa';l1.dataset.role='label1';l1w.appendChild(l1);
+  var l2w=el('div');l2w.appendChild(el('label',null,'Etiqueta precio 2'));
+  var l2=el('input');l2.type='text';l2.value=s.priceLabel2||'Botella';l2.dataset.role='label2';l2w.appendChild(l2);
+  labels.appendChild(l1w);labels.appendChild(l2w);
+  if(!s.twoPrice)labels.classList.add('hidden');
+  body.appendChild(labels);
+
+  // Items
+  var itemsLabel=el('label',null,'Platillos');
+  body.appendChild(itemsLabel);
+  var itemsHost=el('div');itemsHost.dataset.role='items';
+  (s.items||[]).forEach(function(it){itemsHost.appendChild(buildItemRow(it,!!s.twoPrice));});
+  body.appendChild(itemsHost);
+  var addItem=el('button','btn btn-ghost btn-sm additem','+ Agregar platillo');
+  addItem.onclick=function(){itemsHost.appendChild(buildItemRow({name:'',desc:'',price:''},cb.checked));};
+  body.appendChild(addItem);
+
+  cb.onchange=function(){
+    labels.classList.toggle('hidden',!cb.checked);
+    // reconstruir filas para mostrar/ocultar segundo precio, conservando valores
+    var cur=readItems(itemsHost);
+    itemsHost.innerHTML='';
+    cur.forEach(function(it){itemsHost.appendChild(buildItemRow(it,cb.checked));});
+  };
+
+  card.appendChild(body);
+
+  /* Footer */
+  var foot=el('div','footer-actions');
+  var left=el('div');
+  var saveBtn=el('button','btn btn-gold','Guardar sección');
+  var saved=el('span','badge-saved','✓ Guardado');saved.style.marginLeft='10px';
+  left.appendChild(saveBtn);left.appendChild(saved);
+  saveBtn.onclick=function(){saveSectionCard(card,s,saved);};
+  var delBtn=el('button','btn btn-danger btn-sm','Borrar sección');
+  delBtn.onclick=function(){
+    confirmBox('¿Borrar la sección "'+(nameIn.value||s.name)+'" y todas sus fotos? Esto no se puede deshacer.',function(){
+      spin(true,'Borrando…');
+      Store.deleteSection(s).then(function(){
+        state.sections=state.sections.filter(function(x){return x.id!==s.id;});
+        spin(false);renderSections();toast('Sección borrada','ok');
+      }).catch(function(e){spin(false);toast(loginError(e),'err');});
+    });
+  };
+  foot.appendChild(left);foot.appendChild(delBtn);
+  card.appendChild(foot);
+  return card;
+}
+
+function readItems(host){
+  var out=[];
+  host.querySelectorAll('.itemrow').forEach(function(row){
+    var name=(row.querySelector('[data-role=name]').value||'').trim();
+    var desc=(row.querySelector('[data-role=desc]').value||'').trim();
+    var p1=row.querySelector('[data-role=price]');
+    var p2=row.querySelector('[data-role=price2]');
+    var it={name:name,desc:desc,price:p1?p1.value.trim():''};
+    if(p2) it.price2=p2.value.trim();
+    if(name!=='' || it.price!=='' || (it.price2&&it.price2!=='')) out.push(it);
+  });
+  return out;
+}
+
+function saveSectionCard(card,s,savedBadge){
+  var body=card.querySelector('.secbody');
+  var name=card.querySelector('[data-role=secname]').value.trim()||'Sin nombre';
+  var group=card.querySelector('[data-role=group]').value;
+  var twoPrice=card.querySelector('[data-role=twoprice]').checked;
+  var label1=card.querySelector('[data-role=label1]').value.trim()||'Copa';
+  var label2=card.querySelector('[data-role=label2]').value.trim()||'Botella';
+  var items=readItems(card.querySelector('[data-role=items]'));
+  var data={name:name,group:group,twoPrice:twoPrice,priceLabel1:label1,priceLabel2:label2,items:items,photoIds:s.photoIds||[],order:s.order};
+  spin(true);
+  Store.updateSection(s.id,data).then(function(){
+    Object.assign(s,data);
+    spin(false);
+    if(savedBadge){savedBadge.classList.add('show');setTimeout(function(){savedBadge.classList.remove('show');},1600);}
+    toast('Sección guardada','ok');
+    // Si cambió el grupo y hay filtro activo, re-render
+    var f=$('secFilter').value;
+    if(f!=='all' && group!==f) renderSections();
+  }).catch(function(e){spin(false);toast(loginError(e),'err');});
+}
+
+function renderSectionThumbs(host,s){
+  host.innerHTML='';
+  var ids=s.photoIds||[];
+  if(!ids.length){host.appendChild(el('span','hint','Sin fotos. La primera será la miniatura.'));return;}
+  ids.forEach(function(id){
+    var t=el('div','thumb');var img=el('img');img.alt='';
+    Store.loadMedia(id).then(function(u){if(u)img.src=u;});
+    var x=el('button','x','×');x.title='Quitar';
+    x.onclick=function(){
+      confirmBox('¿Quitar esta foto?',function(){
+        spin(true);
+        var arr=(s.photoIds||[]).filter(function(i){return i!==id;});
+        Store.updateSection(s.id,{photoIds:arr}).then(function(){
+          s.photoIds=arr;Store.deleteMedia(id);renderSectionThumbs(host,s);spin(false);
+        }).catch(function(e){spin(false);toast(loginError(e),'err');});
+      });
+    };
+    t.appendChild(img);t.appendChild(x);host.appendChild(t);
+  });
+}
+function uploadSectionPhotos(s,files,host){
+  files=Array.prototype.slice.call(files);if(!files.length)return;
+  spin(true,'Subiendo fotos…');
+  var arr=(s.photoIds||[]).slice();
+  (function next(i){
+    if(i>=files.length){
+      Store.updateSection(s.id,{photoIds:arr}).then(function(){
+        s.photoIds=arr;renderSectionThumbs(host,s);spin(false);toast('Fotos agregadas','ok');
+      }).catch(function(e){spin(false);toast(loginError(e),'err');});
+      return;
+    }
+    Store.uploadImage(files[i]).then(function(id){arr.push(id);next(i+1);})
+      .catch(function(err){spin(false);toast('Error con una foto: '+(err.message||''),'err');});
+  })(0);
+}
+
+function moveSection(id,dir){
+  var list=state.sections.slice().sort(function(a,b){return (a.order||0)-(b.order||0);});
+  var idx=list.findIndex(function(s){return s.id===id;});
+  var swap=idx+dir;
+  if(swap<0||swap>=list.length)return;
+  var a=list[idx],b=list[swap];
+  var oa=a.order,ob=b.order;
+  spin(true,'Reordenando…');
+  Promise.all([Store.updateSection(a.id,{order:ob}),Store.updateSection(b.id,{order:oa})]).then(function(){
+    a.order=ob;b.order=oa;spin(false);renderSections();
+    var node=document.querySelector('.seccard[data-id="'+id+'"]');if(node)node.scrollIntoView({behavior:'smooth',block:'center'});
+  }).catch(function(e){spin(false);toast(loginError(e),'err');});
+}
+</script>
+</body>
+</html>

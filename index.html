@@ -1,165 +1,171 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Muelle 817</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body, html {
-      height: 100%;
-      overflow: hidden;
-      font-family: 'Segoe UI', sans-serif;
-      color: white;
-    }
-    /* Video de fondo corregido */
-    #bg-video {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      z-index: -2;
-    }
-    .overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.45);
-      z-index: -1;
-    }
-    .container {
-      position: relative;
-      z-index: 1;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      text-align: center;
-    }
-    /* === NUEVO: Estilos del logo (discreto y elegante) === */
-    .logo {
-      width: 170px;           /* Tamaño discreto */
-      height: auto;
-      margin-bottom: 25px;    /* Espacio entre logo y "MENÚ" */
-      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
-      opacity: 0.92;          /* Un toque sutil de transparencia */
-      transition: all 0.3s ease;
-    }
-    .logo:hover {
-      transform: scale(1.05);
-      opacity: 1;
-    }
-    /* === Fin de estilos del logo === */
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Muelle 817 TRC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#12283f;--navy-soft:#28455f;
+    --gold:#c9a24b;--gold-light:#e6c976;--gold-deep:#a9803a;
+    --cream:#f7f2e7;--white:#ffffff;--ink:#2b3a46;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:'Montserrat',system-ui,sans-serif;color:var(--navy);
+    min-height:100%;display:flex;flex-direction:column;position:relative;overflow-x:hidden;
+    background:var(--cream);
+  }
+  /* Fondo de olas (fijo) */
+  body::before{
+    content:"";position:fixed;inset:0;z-index:0;
+    background:url('assets/fondo.jpg') center center / cover no-repeat;
+    background-color:var(--cream);
+  }
+  /* velo suave para dar contraste al centro */
+  body::after{
+    content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:radial-gradient(60% 45% at 50% 42%, rgba(255,255,255,.55), rgba(255,255,255,0) 70%);
+  }
+  .wrap{
+    position:relative;z-index:2;flex:1;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:44px 22px 60px;width:100%;max-width:600px;margin:0 auto;
+  }
+  .topline{font-size:.7rem;letter-spacing:.42em;text-transform:uppercase;color:var(--gold-deep);font-weight:600;margin-bottom:20px;padding-left:.42em}
+  .topline .dot{color:var(--gold);margin:0 .5em}
 
-    .social-top-left {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-      z-index: 10;
-    }
-    .social-top-left a img {
-      width: 50px;
-      height: 50px;
-      transition: all 0.3s ease;
-      filter: drop-shadow(0 3px 6px rgba(0,0,0,0.6));
-    }
-    .social-top-left a img:hover {
-      transform: scale(1.15) translateY(-4px);
-      filter: drop-shadow(0 6px 12px rgba(0,0,0,0.7));
-    }
-    .menu-3d {
-      font-size: clamp(4.5rem, 12vw, 7rem);
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 8px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.4s ease;
-      text-shadow: 0 8px 20px rgba(0,0,0,0.7), 0 15px 40px rgba(0,0,0,0.5);
-      transform: perspective(900px) rotateX(10deg);
-      margin: 40px 0 25px;
-      color: aliceblue;
-    }
-    .menu-3d:hover {
-      transform: perspective(900px) rotateX(16deg) translateY(-10px);
-      text-shadow: 0 12px 30px rgba(0,0,0,0.8), 0 20px 50px rgba(0,0,0,0.6);
-      color: aliceblue;
-    }
-    .review-btn {
-      font-size: clamp(1.4rem, 5vw, 1.9rem);
-      font-weight: 600;
-      padding: 14px 40px;
-      background: rgba(255,255,255,0.13);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255,255,255,0.28);
-      border-radius: 50px;
-      color: white;
-      cursor: pointer;
-      transition: all 0.35s ease;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.4);
-      margin-top: 35px;
-    }
-    .review-btn:hover {
-      background: rgba(255,255,255,0.24);
-      transform: translateY(-5px);
-      box-shadow: 0 14px 35px rgba(0,0,0,0.55);
-    }
-    /* Responsive */
-    @media (max-width: 600px) {
-      .social-top-left {
-        top: 15px;
-        left: 15px;
-        gap: 15px;
-      }
-      .social-top-left a img {
-        width: 44px;
-        height: 44px;
-      }
-      .logo {
-        width: 140px;
-        margin-bottom: 20px;
-      }
-    }
-  </style>
+  .logo-box{width:min(74vw,320px);margin-bottom:6px;animation:rise .9s ease both}
+  .logo-box img{display:block;width:100%;height:auto;filter:drop-shadow(0 10px 24px rgba(18,40,63,.16))}
+  /* respaldo si aún no hay logo */
+  .logo-fallback{display:flex;flex-direction:column;align-items:center;gap:6px;animation:rise .9s ease both}
+  .logo-fallback .brand{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:clamp(2.6rem,11vw,4rem);line-height:.95;color:var(--navy)}
+  .logo-fallback .trc{font-family:'Cormorant Garamond',serif;font-weight:600;letter-spacing:.55em;font-size:1rem;color:var(--gold-deep);padding-left:.55em}
+
+  .subtitle{font-family:'Cormorant Garamond',serif;font-size:clamp(1.15rem,4.6vw,1.5rem);color:var(--navy-soft);margin:8px 0 4px;font-weight:500;font-style:italic;animation:rise 1s .1s ease both}
+  .divider{display:flex;align-items:center;justify-content:center;gap:12px;margin:22px 0 32px;color:var(--gold);width:220px;max-width:80%;animation:rise 1s .15s ease both}
+  .divider .line{height:1px;flex:1;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+  .divider svg{width:22px;height:22px}
+
+  .actions{display:flex;flex-direction:column;gap:15px;width:100%;max-width:330px;animation:rise 1s .2s ease both}
+  .btn{display:flex;align-items:center;justify-content:center;gap:12px;text-decoration:none;cursor:pointer;border:none;padding:18px 26px;border-radius:16px;font-family:'Montserrat',sans-serif;font-weight:600;font-size:1.02rem;letter-spacing:.16em;text-transform:uppercase;transition:transform .18s ease, box-shadow .25s ease}
+  .btn svg{width:20px;height:20px}
+  .btn-menu{background:linear-gradient(135deg,var(--gold-light),var(--gold) 55%,var(--gold-deep));color:#3a2c0a;box-shadow:0 12px 26px rgba(169,128,58,.4), inset 0 1px 0 rgba(255,255,255,.5)}
+  .btn-menu:hover{transform:translateY(-3px);box-shadow:0 18px 34px rgba(169,128,58,.5)}
+  .btn-review{background:rgba(255,255,255,.92);color:var(--navy);border:1.6px solid var(--gold);box-shadow:0 8px 20px rgba(18,40,63,.1)}
+  .btn-review:hover{transform:translateY(-3px);background:#fff}
+
+  .socials{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:34px;animation:rise 1s .3s ease both}
+  .socials a{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.92);color:var(--navy);border:1.4px solid rgba(201,162,75,.55);box-shadow:0 6px 16px rgba(18,40,63,.1);transition:transform .18s ease, background .25s ease, color .25s ease;text-decoration:none}
+  .socials a:hover{transform:translateY(-4px);background:var(--navy);color:var(--gold-light);border-color:var(--navy)}
+  .socials a svg{width:22px;height:22px}
+  .socials:empty{display:none}
+
+  .foot{position:relative;z-index:2;text-align:center;font-size:.72rem;letter-spacing:.12em;color:var(--gold-deep);padding:0 20px 24px;opacity:.9}
+
+  @keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+  @media (prefers-reduced-motion: reduce){.logo-box,.logo-fallback,.subtitle,.divider,.actions,.socials{animation:none}}
+  .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:var(--navy);color:#fff;padding:12px 20px;border-radius:12px;font-size:.86rem;opacity:0;transition:all .3s ease;z-index:50;box-shadow:0 10px 30px rgba(0,0,0,.25);pointer-events:none;max-width:90vw}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
 </head>
 <body>
-  <!-- Video de fondo -->
-  <video autoplay muted loop playsinline id="bg-video" preload="auto">
-    <source src="fondo.mp4" type="video/mp4">
-    Tu navegador no soporta el video.
-  </video>
-  <!-- Overlay oscuro -->
-  <div class="overlay"></div>
-  
-  <!-- Contenido principal -->
-  <div class="container">
-    <!-- Logo centrado en la parte superior (discreto) -->
-    <img src="logo.png" alt="Muelle 817 Logo" class="logo">
+  <div class="wrap">
+    <div class="topline">Mariscos <span class="dot">&#9875;</span> Cortes</div>
 
-    <div class="social-top-left">
-      <a href="https://www.instagram.com/muelle817.trc?igsh=YjF6ZmMxMmN2cHZz" target="_blank">
-        <img src="ig.png" alt="Instagram">
+    <div id="logoHost">
+      <div class="logo-box"><img src="assets/logo.png" alt="Muelle 817 TRC" onerror="this.parentNode.outerHTML='&lt;div class=\'logo-fallback\'&gt;&lt;div class=\'brand\'&gt;Muelle 817&lt;/div&gt;&lt;div class=\'trc\'&gt;TRC&lt;/div&gt;&lt;/div&gt;'"></div>
+    </div>
+
+    <div class="subtitle" id="subtitle">El sabor del mar</div>
+
+    <div class="divider">
+      <span class="line"></span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 12c3-4 5-4 8 0s5 4 8 0"/><path d="M4 16c2.5-3 4-3 6 0"/></svg>
+      <span class="line"></span>
+    </div>
+
+    <div class="actions">
+      <a class="btn btn-menu" href="menu.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16M4 12h16M4 19h10"/></svg>
+        Menú
       </a>
-      <a href="https://www.facebook.com/share/1DdJfSsAj7/?mibextid=wwXIfr" target="_blank">
-        <img src="face.png" alt="Facebook">
+      <a class="btn btn-review" id="reviewBtn" href="#">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 7.1-1.01z"/></svg>
+        Reseña
       </a>
     </div>
-    
-    <a href="menu.html" class="menu-3d">MENÚ</a>
-  
-    <button class="review-btn" onclick="window.open('https://g.page/r/CcDrzrjSZSCwEAE/review', '_blank')">
-      Cuéntanos tu experiencia
-    </button>
+
+    <div class="socials" id="socials"></div>
   </div>
+
+  <div class="foot">MUELLE 817 TRC &middot; <span id="year"></span></div>
+  <div class="toast" id="toast"></div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+  <script src="firebase-init.js"></script>
+  <script src="data-seed.js"></script>
+  <script src="store.js"></script>
+  <script>
+    document.getElementById('year').textContent=new Date().getFullYear();
+    function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(function(){t.classList.remove('show')},2600);}
+
+    var ICONS={
+      instagram:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/></svg>',
+      facebook:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H7v3h3v6h3v-6h3l1-3h-4v-2c0-.6.4-1 1-1z"/></svg>',
+      tiktok:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 3c.4 2.2 1.7 3.7 3.9 3.9v3c-1.5 0-2.9-.5-3.9-1.3v6.1c0 3.3-2.6 5.9-5.9 5.9S4.7 18 4.7 14.7 7.3 8.8 10.6 8.8c.3 0 .6 0 .9.1v3.1c-.3-.1-.6-.2-.9-.2-1.5 0-2.7 1.2-2.7 2.7s1.2 2.7 2.7 2.7 2.7-1.2 2.7-2.7V3h2.2z"/></svg>',
+      whatsapp:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2zm0 2a8 8 0 0 1 6.8 12.2l-.3.5.7 2.6-2.7-.7-.5.3A8 8 0 1 1 12 4zm-3.2 3.9c-.2 0-.5.1-.7.3-.3.3-.9.9-.9 2.1s.9 2.5 1 2.6c.1.2 1.7 2.7 4.2 3.7 2.1.8 2.5.7 3 .6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.2-.2-.5-.3l-1.7-.8c-.2-.1-.4-.1-.6.1l-.7.9c-.1.2-.3.2-.5.1-.7-.3-1.4-.6-2.2-1.5-.6-.7-1-1.5-1.1-1.7-.1-.2 0-.4.1-.5l.4-.5c.1-.2.2-.3.2-.5.1-.2 0-.4 0-.5l-.7-1.7c-.2-.4-.4-.4-.6-.4h-.1z"/></svg>',
+      phone:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>'
+    };
+    function normUrl(u,kind){
+      if(!u)return '';u=String(u).trim();if(u==='')return '';
+      if(/^https?:\/\//i.test(u))return u;
+      if(kind==='whatsapp'){var d=u.replace(/[^0-9]/g,'');return d?('https://wa.me/'+d):'';}
+      if(kind==='phone'){var d2=u.replace(/[^0-9+]/g,'');return d2?('tel:'+d2):'';}
+      if(kind==='instagram')return 'https://instagram.com/'+u.replace(/^@/,'');
+      if(kind==='facebook')return 'https://facebook.com/'+u.replace(/^@/,'');
+      if(kind==='tiktok')return 'https://tiktok.com/@'+u.replace(/^@/,'');
+      return 'https://'+u;
+    }
+    function renderSocials(cfg){
+      var host=document.getElementById('socials');host.innerHTML='';
+      [['instagram','Instagram'],['facebook','Facebook'],['tiktok','TikTok'],['whatsapp','WhatsApp'],['phone','Teléfono']].forEach(function(pair){
+        var kind=pair[0];var url=normUrl(cfg[kind],kind);if(!url)return;
+        var a=document.createElement('a');a.href=url;a.title=pair[1];a.setAttribute('aria-label',pair[1]);
+        if(kind!=='phone'&&kind!=='whatsapp'){a.target='_blank';a.rel='noopener';}
+        a.innerHTML=ICONS[kind];host.appendChild(a);
+      });
+    }
+    var reviewCfg='';
+    document.getElementById('reviewBtn').addEventListener('click',function(e){
+      e.preventDefault();
+      if(!reviewCfg){toast('El enlace de reseñas aún no está configurado.');return;}
+      window.open(reviewCfg,'_blank','noopener');
+    });
+
+    function applyConfig(cfg){
+      cfg=cfg||{};
+      if(cfg.tagline)document.getElementById('subtitle').textContent=cfg.tagline;
+      reviewCfg=normUrl(cfg.reviewUrl,'url');
+      renderSocials(cfg);
+      if(cfg.logoId){
+        Store.loadMedia(cfg.logoId).then(function(url){
+          if(url)document.getElementById('logoHost').innerHTML='<div class="logo-box"><img src="'+url+'" alt="'+(cfg.restaurantName||'Muelle 817 TRC')+'"></div>';
+        });
+      }
+    }
+
+    if(window.Store){
+      Store.loadConfig().then(applyConfig).catch(function(){ applyConfig((window.SEED&&window.SEED.config)||{}); });
+    }else{
+      applyConfig((window.SEED&&window.SEED.config)||{});
+    }
+  </script>
 </body>
 </html>

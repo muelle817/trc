@@ -1,114 +1,292 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Menú - Muelle 817</title>
-  <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body, html { 
-      height:100%; 
-      font-family:'Segoe UI',sans-serif; 
-      color:white; 
-      background:#111; 
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Menú · Muelle 817 TRC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#12283f;--navy-soft:#28455f;
+    --gold:#c9a24b;--gold-light:#e6c976;--gold-deep:#a9803a;
+    --cream:#f7f2e7;--white:#ffffff;--ink:#2b3a46;--muted:#5c6772;
+    --line:#e7dcc4;--sheet:rgba(255,255,255,.9);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Montserrat',system-ui,sans-serif;color:var(--ink);min-height:100vh;position:relative;background:var(--cream)}
+  body::before{content:"";position:fixed;inset:0;z-index:-2;background:url('assets/fondo.jpg') center center / cover no-repeat;background-color:var(--cream)}
+  body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg, rgba(247,242,231,.15) 0%, rgba(247,242,231,.35) 100%)}
+  a{color:inherit}
 
-    #bg-video {
-      position: fixed;
-      top: 50%; left: 50%;
-      min-width: 100%; min-height: 100%;
-      width: auto; height: auto;
-      transform: translate(-50%, -50%);
-      z-index: -2;
-      object-fit: cover;
-    }
+  /* Hero */
+  .hero{position:relative;text-align:center;padding:26px 18px 14px;max-width:720px;margin:0 auto}
+  .hero .back{position:absolute;left:12px;top:18px;width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.85);border:1px solid rgba(201,162,75,.5);text-decoration:none;box-shadow:0 4px 14px rgba(18,40,63,.1)}
+  .hero .back svg{width:20px;height:20px;color:var(--navy)}
+  .hero .logo{max-width:230px;max-height:150px;width:auto;margin:6px auto 2px;display:block;filter:drop-shadow(0 8px 20px rgba(18,40,63,.14))}
+  .hero .brand{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:2.2rem;color:var(--navy);line-height:1}
+  .hero .brand small{display:block;font-family:'Montserrat';font-size:.6rem;letter-spacing:.5em;color:var(--gold-deep);margin-top:4px;padding-left:.5em;font-weight:600}
+  .hero .title{font-family:'Cormorant Garamond',serif;font-size:1.5rem;letter-spacing:.34em;color:var(--gold-deep);text-transform:uppercase;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:14px}
+  .hero .title .l{height:1px;width:34px;background:linear-gradient(90deg,transparent,var(--gold))}
+  .hero .title .r{height:1px;width:34px;background:linear-gradient(90deg,var(--gold),transparent)}
 
-    .overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.55);
-      z-index: -1;
-    }
+  /* Chips navegación (sticky) */
+  .chips{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid rgba(231,220,196,.8);border-bottom:1px solid rgba(231,220,196,.8);box-shadow:0 4px 16px rgba(18,40,63,.06)}
+  .chips .track{display:flex;gap:8px;overflow-x:auto;padding:11px 14px;scrollbar-width:none;-ms-overflow-style:none;max-width:900px;margin:0 auto}
+  .chips .track::-webkit-scrollbar{display:none}
+  .chip{white-space:nowrap;cursor:pointer;border:1px solid var(--line);background:rgba(255,255,255,.7);color:var(--navy-soft);padding:8px 14px;border-radius:999px;font-size:.76rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;transition:all .2s;flex:none}
+  .chip:hover{border-color:var(--gold)}
+  .chip.active{background:linear-gradient(135deg,var(--gold-light),var(--gold-deep));color:#3a2c0a;border-color:transparent;box-shadow:0 6px 14px rgba(169,128,58,.3)}
 
-    .back-btn {
-      position: fixed;
-      top: 20px; left: 20px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      z-index: 10;
-    }
+  .sheet{max-width:720px;margin:16px auto 90px;background:var(--sheet);backdrop-filter:blur(2px);border:1px solid rgba(255,255,255,.6);border-radius:20px;box-shadow:0 16px 46px rgba(18,40,63,.1);padding:8px 16px 26px}
+  @media(min-width:560px){.sheet{padding:8px 30px 30px}}
 
-    .back-btn img {
-      width: 50px; height: 50px;
-      filter: drop-shadow(0 3px 8px rgba(0,0,0,0.8));
-      transition: all 0.3s ease;
-    }
+  /* Divisor de grupo */
+  .group-div{display:flex;align-items:center;gap:14px;margin:26px 4px 6px;color:var(--gold-deep)}
+  .group-div .l{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold))}
+  .group-div .r{flex:1;height:1px;background:linear-gradient(90deg,var(--gold),transparent)}
+  .group-div span{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:1.15rem;letter-spacing:.28em;text-transform:uppercase}
 
-    .back-btn:hover img {
-      transform: scale(1.12) translateX(-6px);
-    }
+  /* Categoría */
+  .cat{scroll-margin-top:74px;padding-top:20px}
+  .cat-head{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+  .cat-ic{width:50px;height:50px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#fff6e2,#f0e2bf);border:1px solid rgba(201,162,75,.5);color:var(--gold-deep);overflow:hidden;box-shadow:0 4px 12px rgba(169,128,58,.18)}
+  .cat-ic img{width:100%;height:100%;object-fit:cover}
+  .cat-ic svg{width:24px;height:24px}
+  .cat-name{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:1.7rem;color:var(--navy);line-height:1;letter-spacing:.01em}
+  .cat-underline{height:2px;background:linear-gradient(90deg,var(--gold),transparent);border-radius:2px;margin:0 0 6px;width:100%}
 
-    .menu-container {
-      position: relative;
-      z-index: 1;
-      min-height: 100vh;
-      padding: 90px 15px 40px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      overflow-y: auto;
-    }
+  /* Carrusel de sección */
+  .carousel{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#efe6d2;margin:10px 0 14px}
+  .carousel img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .7s ease}
+  .carousel img.on{opacity:1}
+  .carousel .dots{position:absolute;bottom:8px;left:0;right:0;display:flex;gap:6px;justify-content:center;z-index:2}
+  .carousel .dots i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.6);box-shadow:0 1px 3px rgba(0,0,0,.4);transition:all .2s;cursor:pointer}
+  .carousel .dots i.on{background:var(--gold-light);width:20px;border-radius:4px}
+  .carousel .cap{position:absolute;left:0;right:0;bottom:0;height:38%;background:linear-gradient(transparent,rgba(18,40,63,.32))}
 
-    .menu-images {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 28px;
-      width: 100%;
-      max-width: 880px;
-    }
+  /* Platillos */
+  .dishes{list-style:none;margin-top:6px}
+  .dish{padding:12px 0;border-bottom:1px dashed var(--line)}
+  .dish:last-child{border-bottom:none}
+  .dish-top{display:flex;align-items:baseline;gap:10px}
+  .dish-name{font-weight:600;font-size:1rem;color:var(--navy);flex:1;letter-spacing:.01em}
+  .leader{flex:1;border-bottom:1px dotted #d8caa6;transform:translateY(-4px);min-width:12px}
+  .dish-price{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:1.22rem;color:var(--gold-deep);white-space:nowrap}
+  .dish-desc{font-size:.85rem;color:var(--muted);line-height:1.5;margin-top:4px;max-width:94%}
 
-    .menu-images img {
-      width: 100%;
-      max-width: 820px;
-      border-radius: 10px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.7);
-      transition: transform 0.25s ease;
-    }
+  /* Dos precios */
+  .price-head{display:grid;grid-template-columns:1fr 66px 78px;gap:8px;padding:2px 0 8px;border-bottom:1px solid var(--line);margin:4px 0 2px}
+  .price-head span{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-deep);font-weight:700;text-align:right}
+  .price-head span:first-child{text-align:left}
+  .dish.two{display:grid;grid-template-columns:1fr 66px 78px;gap:8px;align-items:center}
+  .dish.two .dish-name{font-size:.97rem}
+  .dish.two .p{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:1.08rem;color:var(--gold-deep);text-align:right;white-space:nowrap}
+  .dish.two .dish-desc{grid-column:1/-1;margin-top:2px}
 
-    .menu-images img:hover {
-      transform: scale(1.012);
-    }
+  .empty,.loading-screen{text-align:center;padding:70px 20px;color:var(--muted)}
+  .loading-screen .spinner{width:34px;height:34px;border:3px solid var(--line);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 14px}
+  @keyframes spin{to{transform:rotate(360deg)}}
 
-    @media (max-width: 600px) {
-      .back-btn { top:15px; left:15px; }
-      .back-btn img { width:46px; height:46px; }
-      .menu-images { gap: 20px; }
-    }
-  </style>
+  .totop{position:fixed;right:16px;bottom:18px;width:46px;height:46px;border-radius:50%;background:var(--navy);color:var(--gold-light);border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:30;opacity:0;pointer-events:none;transition:opacity .3s;box-shadow:0 8px 20px rgba(0,0,0,.25)}
+  .totop.show{opacity:1;pointer-events:auto}
+  .totop svg{width:22px;height:22px}
+  .foot{text-align:center;color:var(--gold-deep);font-size:.72rem;letter-spacing:.12em;padding:0 20px 30px;opacity:.85}
+</style>
 </head>
 <body>
-
-  <video autoplay muted loop playsinline id="bg-video">
-    <source src="fondo.mp4" type="video/mp4">
-  </video>
-
-  <div class="overlay"></div>
-
-  <button class="back-btn" onclick="window.location.href='index.html'">
-    <img src="flecha.png" alt="Regresar">
-  </button>
-
-  <div class="menu-container">
-    <div class="menu-images">
-      <img src="menu1.png" alt="Menú 1">
-      <img src="menu2.png" alt="Menú 2">
-      <img src="menu3.png" alt="Menú 3">
-      <img src="menu4.png" alt="Menú 4">
-      <img src="menu5.png" alt="Menú 5">
-    </div>
+  <div class="hero">
+    <a class="back" href="index.html" title="Inicio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></a>
+    <div id="brandHost"><img class="logo" src="assets/logo.png" alt="Muelle 817 TRC" onerror="this.outerHTML='&lt;div class=\'brand\'&gt;Muelle 817&lt;small&gt;TRC&lt;/small&gt;&lt;/div&gt;'"></div>
+    <div class="title"><span class="l"></span>Menú<span class="r"></span></div>
   </div>
 
+  <nav class="chips"><div class="track" id="chips"></div></nav>
+
+  <main class="sheet" id="sheet">
+    <div class="loading-screen"><div class="spinner"></div>Cargando el menú…</div>
+  </main>
+
+  <div class="foot">MUELLE 817 TRC &middot; Mariscos &amp; Cortes</div>
+
+  <div class="totop" id="totop" title="Subir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg></div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+  <script src="firebase-init.js"></script>
+  <script src="data-seed.js"></script>
+  <script src="store.js"></script>
+  <script>
+    var CAROUSEL_MS=3000;
+    function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;}
+    function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+    function fmt(v){return (window.Store?Store.fmtPrice(v):(v?('$'+v):''));}
+
+    var IC={
+      food:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v7a2 2 0 0 0 4 0V3M8 10v11"/><path d="M17 3c-1.7 0-3 2-3 5s1 4 2 4v9"/></svg>',
+      drinks:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h14l-6 8v6"/><path d="M9 21h8"/><path d="M13 18h4"/></svg>'
+    };
+
+    /* Carrusel con arranque/pausa según visibilidad */
+    function buildCarousel(container, urls){
+      if(container._iv){clearInterval(container._iv);container._iv=null;}
+      container.innerHTML='';
+      var imgs=[];
+      urls.forEach(function(u,i){var im=el('img');im.src=u;im.alt='';if(i===0)im.classList.add('on');container.appendChild(im);imgs.push(im);});
+      container.appendChild(el('div','cap'));
+      var idx=0;
+      if(urls.length>1){
+        var dots=el('div','dots');
+        urls.forEach(function(_,i){var d=el('i');if(i===0)d.classList.add('on');d.addEventListener('click',function(){go(i);reset();});dots.appendChild(d);});
+        container.appendChild(dots);
+        var go=function(n){imgs[idx].classList.remove('on');dots.children[idx].classList.remove('on');idx=(n+imgs.length)%imgs.length;imgs[idx].classList.add('on');dots.children[idx].classList.add('on');};
+        var reset=function(){clearInterval(container._iv);container._iv=setInterval(function(){go(idx+1);},CAROUSEL_MS);};
+        container._start=reset;container._stop=function(){clearInterval(container._iv);container._iv=null;};
+        var x0=null;
+        container.addEventListener('touchstart',function(e){x0=e.touches[0].clientX;},{passive:true});
+        container.addEventListener('touchend',function(e){if(x0==null)return;var dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>40){go(idx+(dx<0?1:-1));reset();}x0=null;},{passive:true});
+      }else{container._start=function(){};container._stop=function(){};}
+    }
+
+    function renderDishes(section){
+      var wrap=el('div');
+      var items=section.items||[];
+      if(section.twoPrice){
+        wrap.appendChild(el('div','price-head','<span>&nbsp;</span><span>'+esc(section.priceLabel1||'Copa')+'</span><span>'+esc(section.priceLabel2||'Botella')+'</span>'));
+      }
+      var ul=el('ul','dishes');
+      items.forEach(function(it){
+        var li;
+        if(section.twoPrice){
+          li=el('li','dish two');
+          li.appendChild(el('div','dish-name',esc(it.name)));
+          li.appendChild(el('div','p',fmt(it.price)));
+          li.appendChild(el('div','p',fmt(it.price2)));
+          if(it.desc)li.appendChild(el('div','dish-desc',esc(it.desc)));
+        }else{
+          li=el('li','dish');
+          var top=el('div','dish-top');
+          top.appendChild(el('span','dish-name',esc(it.name)));
+          top.appendChild(el('span','leader'));
+          top.appendChild(el('span','dish-price',fmt(it.price)));
+          li.appendChild(top);
+          if(it.desc)li.appendChild(el('div','dish-desc',esc(it.desc)));
+        }
+        ul.appendChild(li);
+      });
+      wrap.appendChild(ul);
+      return wrap;
+    }
+
+    var carouselObserver=null;
+
+    function renderMenu(sections){
+      var sheet=document.getElementById('sheet');
+      sheet.innerHTML='';
+      var chips=document.getElementById('chips');chips.innerHTML='';
+      sections=sections.slice().sort(function(a,b){return (a.order||0)-(b.order||0);});
+      if(!sections.length){sheet.innerHTML='<div class="empty">El menú se está preparando.</div>';return;}
+
+      var lastGroup=null;
+      var carousels=[];
+      sections.forEach(function(s){
+        var group=(s.group||'food');
+        if(group!==lastGroup){
+          lastGroup=group;
+          var gd=el('div','group-div','<div class="l"></div><span>'+(group==='drinks'?'Bebidas':'Alimentos')+'</span><div class="r"></div>');
+          sheet.appendChild(gd);
+        }
+        var cid='cat-'+s.id;
+        var cat=el('section','cat');cat.id=cid;
+        var head=el('div','cat-head');
+        var ic=el('div','cat-ic');
+        if(s.photoIds&&s.photoIds.length){var im=el('img');im.alt='';Store.loadMedia(s.photoIds[0]).then(function(u){if(u)im.src=u;});ic.appendChild(im);}
+        else{ic.innerHTML=IC[group]||IC.food;}
+        head.appendChild(ic);
+        head.appendChild(el('div','cat-name',esc(s.name)));
+        cat.appendChild(head);
+        cat.appendChild(el('div','cat-underline'));
+
+        if(s.photoIds&&s.photoIds.length){
+          var car=el('div','carousel');cat.appendChild(car);
+          carousels.push({el:car,ids:s.photoIds,loaded:false});
+        }
+        cat.appendChild(renderDishes(s));
+        sheet.appendChild(cat);
+
+        var chip=el('a','chip',esc(s.name));chip.href='#'+cid;chip.dataset.target=cid;
+        chip.addEventListener('click',function(e){e.preventDefault();var t=document.getElementById(cid);if(t)t.scrollIntoView({behavior:'smooth',block:'start'});});
+        chips.appendChild(chip);
+      });
+
+      setupScrollspy();
+      setupCarousels(carousels);
+    }
+
+    function setupScrollspy(){
+      var cats=Array.prototype.slice.call(document.querySelectorAll('.cat'));
+      var chips=document.getElementById('chips');
+      var obs=new IntersectionObserver(function(entries){
+        entries.forEach(function(en){
+          if(en.isIntersecting){
+            var id=en.target.id;
+            chips.querySelectorAll('.chip').forEach(function(c){c.classList.toggle('active',c.dataset.target===id);});
+            var active=chips.querySelector('.chip.active');
+            if(active)active.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
+          }
+        });
+      },{rootMargin:'-80px 0px -70% 0px',threshold:0});
+      cats.forEach(function(c){obs.observe(c);});
+    }
+
+    function setupCarousels(carousels){
+      if(!carousels.length)return;
+      var obs=new IntersectionObserver(function(entries){
+        entries.forEach(function(en){
+          var rec=carousels.find(function(c){return c.el===en.target;});
+          if(!rec)return;
+          if(en.isIntersecting){
+            if(!rec.loaded){rec.loaded=true;Store.preloadMedia(rec.ids).then(function(urls){urls=urls.filter(Boolean);if(urls.length){buildCarousel(rec.el,urls);if(rec.el._start)rec.el._start();}});}
+            else if(rec.el._start){rec.el._start();}
+          }else{ if(rec.el._stop)rec.el._stop(); }
+        });
+      },{threshold:0.2});
+      carousels.forEach(function(c){obs.observe(c.el);});
+    }
+
+    /* Totop */
+    var totop=document.getElementById('totop');
+    window.addEventListener('scroll',function(){totop.classList.toggle('show',window.scrollY>600);});
+    totop.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
+
+    /* Logo del encabezado */
+    function applyLogo(cfg){
+      if(cfg&&cfg.logoId){
+        Store.loadMedia(cfg.logoId).then(function(u){if(u)document.getElementById('brandHost').innerHTML='<img class="logo" src="'+u+'" alt="'+esc(cfg.restaurantName||'Muelle 817 TRC')+'">';});
+      }
+    }
+
+    /* Carga con respaldo a datos precargados (SEED) */
+    function seedSections(){
+      var s=(window.SEED&&window.SEED.sections)||[];
+      return s.map(function(x,i){var c=JSON.parse(JSON.stringify(x));c.id='seed'+i;c.photoIds=c.photoIds||[];return c;});
+    }
+    function boot(){
+      if(!window.Store){renderMenu(seedSections());return;}
+      Promise.all([Store.loadConfig(),Store.loadSections()]).then(function(r){
+        var cfg=r[0]||{};var secs=r[1]||[];
+        applyLogo(cfg);
+        if(!secs.length)secs=seedSections();
+        renderMenu(secs);
+      }).catch(function(err){
+        console.warn('Usando menú precargado:',err);
+        renderMenu(seedSections());
+      });
+    }
+    boot();
+  </script>
 </body>
 </html>
